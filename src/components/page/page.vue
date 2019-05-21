@@ -1,13 +1,18 @@
 <template>
     <ui-page :title="title || page.title" :page="page" :backable="backable" ref="page">
         <div slot="drawer">
-            <ui-appbar title=""></ui-appbar>
+            <div class="header">
+                <img class="logo" src="/static/img/url.svg">
+            </div>
             <ui-list @itemClick="toggle()">
                 <ui-list-item title="首页" to="/">
+                    <ui-icon slot="left" value="home"/>
+                </ui-list-item>
+                <ui-list-item title="URL 编码解码" to="/encode">
                     <ui-icon slot="left" value="grade"/>
                 </ui-list-item>
-                <ui-list-item title="关于" to="/about">
-                    <ui-icon slot="left" value="grade"/>
+                <ui-list-item title="关于" href="https://project.yunser.com/products/fd8bffc07b0e11e995de5398b4a2b478" target="_blank">
+                    <ui-icon slot="left" value="info"/>
                 </ui-list-item>
             </ui-list>
         </div>
@@ -80,4 +85,22 @@
     .admin-container {
         padding: 16px;
     }
+</style>
+
+<style lang="scss" scoped>
+.header {
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.logo {
+    display: block;
+    width: 80px;
+    margin: 0 auto;
+}
+.ui-position-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
 </style>

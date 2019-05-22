@@ -12,6 +12,10 @@ Vue.use(Router)
 let routes = [
     {
         path: '/',
+        redirect: '/make'
+    },
+    {
+        path: '/make',
         component: Home
     },
     {

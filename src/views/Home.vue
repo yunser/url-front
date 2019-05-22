@@ -1,7 +1,13 @@
 <template>
     <my-page title="短网址" :page="page">
         <div class="common-container container">
-            开发中
+            <ui-text-field v-model="url" label="网址" hintText="http(s)://" multiLine :rows="3" :rowsMax="6"/>
+            <!-- <ui-text-field v-model.number="r" type="number" label="半径" /> -->
+            <br>
+            <div class="btns">
+                <ui-raised-button primary label="生成短网址" @click="make" />
+            </div>
+            <result title="短网址" :text="result" :copyable="true" />
         </div>
     </my-page>
 </template>
@@ -11,8 +17,7 @@
     export default {
         data () {
             return {
-                code: '',
-                charset: 'utf-8',
+                url: '',
                 result: '',
                 page: {
                     menu: [
@@ -33,29 +38,43 @@
         methods: {
             init() {
             },
-            encode() {
-                if (!this.code) {
-                    alert('请填写要编码/解码的内容')
+            make() {
+                this.result = ''
+                
+                if (!this.url) {
+                    this.$message({
+                        type: 'danger',
+                        text: '请输入网址'
+                    })
                     return
                 }
-                urlencode(this.code, this.charset, str => {
-                    this.result = str
-                })
+                if (!this.url.match(/^https?:\/\//)) {
+                    this.$message({
+                        type: 'danger',
+                        text: '网址格式不正确'
+                    })
+                    return
+                }
+
+                this.$http.get(`/url/shorter?url=${encodeURIComponent(this.url)}`).then(
+                    response => {
+                        let data = response.data
+                        console.log('data', data)
+                        this.result = data.url
+                        this.url = ''
+                    },
+                    response => {
+                        console.log(response)
+                    })
             },
-            decode() {
-                if (!this.code) {
-                    alert('请填写要编码/解码的内容')
-                    return
-                }
-                urldecode(this.code, this.charset, str => {
-                    this.result = str
-                })
-            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
+.btns {
+    margin-bottom: 24px;
+}
 textarea.form-control {
     height: auto;
 }
